@@ -1,9 +1,15 @@
 <script setup>
-import {onMounted, ref} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import Multiselect from '@vueform/multiselect'
+
+const emit = defineEmits(['county-chosen'])
 
 let chosenCounty = ref({})
 let countyCodes = ref([])
+
+watch(chosenCounty, (newCounty) => {
+  emit('county-chosen', newCounty)
+})
 
 onMounted(() => {
   fetchCountyCodes();
