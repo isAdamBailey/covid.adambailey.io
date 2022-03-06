@@ -41,6 +41,7 @@ function fetchCountyCodes() {
       placeholder="Enter County Name"
       :searchable="true"
       track-by="label"
+      limit="50"
       :options="countyCodes"
     />
   </div>
