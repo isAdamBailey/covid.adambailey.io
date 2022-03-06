@@ -1,5 +1,5 @@
 <script setup>
-const props = defineProps(['county'])
+const props = defineProps(['state'])
 </script>
 
 <template>
