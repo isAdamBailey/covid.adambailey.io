@@ -3,6 +3,7 @@ import {computed, onMounted, ref} from "vue";
 import ChooseCounty from './components/ChooseCounty.vue'
 import DisplayData from './components/DisplayData.vue'
 import SourceData from './components/SourceData.vue'
+import MainFooter from './components/MainFooter.vue'
 import states from "./states";
 
 const apiKey = "754ba7d2bbd5429ca95c4ee58b200e08"
@@ -105,6 +106,8 @@ function onCountyChosen(newCounty) {
       >
         <SourceData :data="sourceData" />
       </div>
+
+      <MainFooter />
     </div>
   </div>
 </template>

@@ -23,7 +23,9 @@ function fetchCountyCodes() {
     .then(response => {
       const array = Object.keys(response).map(k => response[k]);
       array.forEach(i => {
-        return countyCodes.value.push({ ["label"]: i[0], ["value"]: i[1] + i[2] });
+        if (i[0] !== "NAME") {
+          return countyCodes.value.push({ ["label"]: i[0], ["value"]: i[1] + i[2] });
+        }
       });
     })
     .catch((error) => {

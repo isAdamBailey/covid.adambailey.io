@@ -34,7 +34,7 @@ const vaccinations = computed(() => {
       <span class="text-gray-600 font-bold mr-2 block md:inline md:text-xl">Cases:</span>
       <a
         :href="cases.url"
-        class="link"
+        class="hover:underline text-blue-500"
       >
         {{ cases.name }}
       </a>
@@ -43,7 +43,7 @@ const vaccinations = computed(() => {
       <span class="text-gray-600 font-bold mr-2 block md:inline md:text-xl">ICU Beds:</span>
       <a
         :href="icuBeds.url"
-        class="link"
+        class="hover:underline text-blue-500"
       >
         {{ icuBeds.name }}
       </a>
@@ -52,7 +52,7 @@ const vaccinations = computed(() => {
       <span class="text-gray-600 font-bold mr-2 block md:inline md:text-xl">Hospital Beds:</span>
       <a
         :href="hospitalBeds.url"
-        class="link"
+        class="hover:underline text-blue-500"
       >
         {{ hospitalBeds.name }}
       </a>
@@ -61,7 +61,7 @@ const vaccinations = computed(() => {
       <span class="text-gray-600 font-bold mr-2 block md:inline md:text-xl">Vaccinations:</span>
       <a
         :href="vaccinations.url"
-        class="link"
+        class="hover:underline text-blue-500"
       >
         {{ vaccinations.name }}
       </a>
