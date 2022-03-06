@@ -33,15 +33,15 @@ function fetchCountyCodes() {
 </script>
 
 <template>
-    <div class="md:text-center md:px-32">
-      <Multiselect
-          placeholder="Enter County Name"
-          :searchable="true"
-          track-by="label"
-          v-model="chosenCounty"
-          :options="countyCodes"
-      />
-    </div>
+  <div class="md:text-center md:px-32">
+    <Multiselect
+      v-model="chosenCounty"
+      placeholder="Enter County Name"
+      :searchable="true"
+      track-by="label"
+      :options="countyCodes"
+    />
+  </div>
 </template>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
