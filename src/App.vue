@@ -84,21 +84,17 @@ function onCountyChosen(newCounty) {
           <span class="font-bold">{{ stateData.lastUpdatedDate }}</span>
         </p>
       </div>
-      <div class=" p-6 md:px-32 mx-auto bg-white rounded-xl shadow-md overflow-hidden">
-        <div class="md:flex">
-          <DisplayData
-            v-if="stateData.country"
-            :title="`${stateData.state} State`"
-            :data="stateData"
-            class="md:mr-10"
-          />
-          <DisplayData
-            v-if="countyData.state"
-            :title="`${countyData.county}, ${countyData.state}`"
-            :data="countyData"
-            class="md:mr-10"
-          />
-        </div>
+      <div class="md:flex space-x-3">
+        <DisplayData
+          v-if="stateData.country"
+          :title="`${stateData.state} State`"
+          :data="stateData"
+        />
+        <DisplayData
+          v-if="countyData.state"
+          :title="`${countyData.county}, ${countyData.state}`"
+          :data="countyData"
+        />
       </div>
       <div
         v-if="countyData.state"

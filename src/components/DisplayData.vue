@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import DataRow from "./DataRow.vue";
+import Chart from "./Chart.vue";
 
 const props = defineProps({
   title: {
@@ -44,22 +45,6 @@ const vaccinationsCompleted = computed(() => {
 const vaccinationsInitiated = computed(() => {
   return props.data.actuals.vaccinationsInitiated || "";
 })
-const percentCases = computed(() => {
-  return cases.value ? percentOf(cases.value, population.value) : 0;
-})
-const percentDeaths = computed(() => {
-  return deaths.value ? percentOf(deaths.value, population.value) : 0;
-})
-const percentHasBooster = computed(() => {
-  return vaccinationsAdditionalDose.value
-      ? percentOf(vaccinationsAdditionalDose.value, population.value)
-      : 0;
-})
-const percentVaccinated = computed(() => {
-  return vaccinationsCompleted.value
-      ? percentOf(vaccinationsCompleted.value, population.value)
-      : 0;
-})
 const percentIcuCapacity = computed(() => {
   return icuBeds.value.currentUsageTotal
       ? percentOf(icuBeds.value.currentUsageTotal, icuBeds.value.capacity)
@@ -73,7 +58,7 @@ const percentBedCapacity = computed(() => {
 </script>
 
 <template>
-  <div>
+  <div class="p-6 md:px-32 mx-auto bg-white rounded-xl shadow-md overflow-hidden md:w-1/2 mt-3 md:mt-0">
     <h3 class="text-4xl text-gray-800 font-bold text-center">
       {{ title }}
     </h3>
@@ -90,87 +75,80 @@ const percentBedCapacity = computed(() => {
       title="New Cases:"
       :value="newCases.toLocaleString()"
     />
-
-    <data-row
-      v-if="cases"
-      title="Current Cumulative Cases:"
-      :value="`${cases.toLocaleString()} (${percentCases}%)`"
-    />
-
-    <data-row
-      v-if="deaths"
-      title="Current Cumulative Deaths:"
-      :value="`${deaths.toLocaleString()} (${percentDeaths}%)`"
-    />
-
-    <h1 class="text-3xl text-blue-600 font-bold mt-6">
-      ICU Beds
-    </h1>
-    <data-row
-      v-if="icuBeds.currentUsageCovid"
-      title="Current COVID Cases In ICU:"
-      :value="icuBeds.currentUsageCovid.toLocaleString()"
-    />
-
-    <data-row
-      v-if="icuBeds.currentUsageTotal"
-      title="Current NON-COVID Cases In ICU:"
-      :value="`${(icuBeds.currentUsageTotal - icuBeds.currentUsageCovid).toLocaleString()}`"
-    />
-
-    <data-row
-      v-if="percentIcuCapacity"
-      title="Capacity:"
-      :value="`${percentIcuCapacity}%`"
-    />
-
-    <h1 class="text-3xl text-blue-600 font-bold mt-6">
-      Hospital Beds
-    </h1>
-    <data-row
-      v-if="hospitalBeds.currentUsageCovid"
-      title="Current COVID Cases In Hospitals:"
-      :value="hospitalBeds.currentUsageCovid.toLocaleString()"
-    />
-
-    <data-row
-      v-if="hospitalBeds.currentUsageCovid"
-      title="Current NON-COVID Cases In Hospitals:"
-      :value="`${(hospitalBeds.currentUsageTotal - hospitalBeds.currentUsageCovid).toLocaleString()}`"
-    />
-
-    <data-row
-      v-if="percentBedCapacity"
-      title="Capacity:"
-      :value="`${percentBedCapacity}%`"
-    />
+    <div class="flex justify-around align-center mt-3">
+      <Chart
+        v-if="cases"
+        :title="`Cases: ${cases.toLocaleString()}`"
+        :labels="['Cases', 'Population']"
+        :data="[cases, population]"
+      />
+      <Chart
+        v-if="deaths"
+        :title="`Deaths: ${deaths.toLocaleString()}`"
+        :labels="['Deaths', 'Population']"
+        :data="[deaths, population]"
+      />
+    </div>
 
     <h1 class="text-3xl text-blue-600 font-bold mt-6">
       Vaccines
     </h1>
     <p>(Pfizer/ Moderna)</p>
-    <data-row
-      v-if="vaccinationsInitiated"
-      title="First shots:"
-      :value="vaccinationsInitiated.toLocaleString()"
-    />
+    <div class="flex justify-around align-center mt-3">
+      <Chart
+        v-if="vaccinationsInitiated"
+        title="First Dose"
+        :labels="['First Dose', 'Population']"
+        :data="[vaccinationsInitiated, population]"
+      />
+      <Chart
+        v-if="vaccinationsCompleted"
+        title="Second Dose"
+        :labels="['Second Dose', 'Population']"
+        :data="[vaccinationsCompleted, population]"
+      />
+      <Chart
+        v-if="vaccinationsAdditionalDose"
+        title="Boosters"
+        :labels="['Boosters', 'Population']"
+        :data="[vaccinationsAdditionalDose, population]"
+      />
+    </div>
 
-    <data-row
-      v-if="vaccinationsCompleted"
-      title="Second shots:"
-      :value="vaccinationsCompleted.toLocaleString()"
-    />
+    <h1 class="text-3xl text-blue-600 font-bold mt-6">
+      ICU Beds
+    </h1>
+    <div class="flex justify-around align-center mt-3">
+      <Chart
+        v-if="icuBeds.currentUsageTotal"
+        :title="`Capacity : ${percentIcuCapacity}%`"
+        :labels="['Usage', 'Capacity']"
+        :data="[icuBeds.currentUsageTotal, icuBeds.capacity]"
+      />
+      <Chart
+        v-if="icuBeds.currentUsageCovid"
+        title="COVID Cases"
+        :labels="['COVID', 'NON-COVID']"
+        :data="[icuBeds.currentUsageCovid, icuBeds.currentUsageTotal - icuBeds.currentUsageCovid]"
+      />
+    </div>
 
-    <data-row
-      v-if="vaccinationsCompleted"
-      title="Percent fully vaxxed:"
-      :value="`${percentVaccinated}%`"
-    />
-
-    <data-row
-      v-if="vaccinationsAdditionalDose"
-      title="Percent with booster:"
-      :value="`${percentHasBooster}%`"
-    />
+    <h1 class="text-3xl text-blue-600 font-bold mt-6">
+      Hospital Beds
+    </h1>
+    <div class="flex justify-around align-center mt-3">
+      <Chart
+        v-if="hospitalBeds.currentUsageTotal"
+        :title="`Capacity: ${percentBedCapacity}%`"
+        :labels="['Usage', 'Capacity']"
+        :data="[hospitalBeds.currentUsageTotal, hospitalBeds.capacity]"
+      />
+      <Chart
+        v-if="hospitalBeds.currentUsageCovid"
+        title="COVID Cases"
+        :labels="['COVID', 'NON-COVID']"
+        :data="[hospitalBeds.currentUsageCovid, hospitalBeds.currentUsageTotal - hospitalBeds.currentUsageCovid]"
+      />
+    </div>
   </div>
 </template>
