@@ -92,10 +92,12 @@ const percentBedCapacity = computed(() => {
     >
       <Chart
         :title="`Cases: ${cases.toLocaleString()}`"
+        color="blue"
         :data="[cases, population - cases]"
       />
       <Chart
         v-if="deaths"
+        color="red"
         :title="`Deaths: ${deaths.toLocaleString()}`"
         :data="[deaths, population - deaths]"
       />
@@ -108,16 +110,19 @@ const percentBedCapacity = computed(() => {
     <DataObject title="Total versus population">
       <Chart
         v-if="vaccinationsInitiated"
+        color="blue"
         title="First Dose"
         :data="[vaccinationsInitiated, population - vaccinationsInitiated]"
       />
       <Chart
         v-if="vaccinationsCompleted"
+        color="blue"
         :title="`Second Dose ${percentVaccinated}%`"
         :data="[vaccinationsCompleted, population - vaccinationsCompleted]"
       />
       <Chart
         v-if="vaccinationsAdditionalDose"
+        color="purple"
         :title="`Boosters: ${percentHasBooster}%`"
         :data="[vaccinationsAdditionalDose, population - vaccinationsAdditionalDose]"
       />
@@ -130,12 +135,14 @@ const percentBedCapacity = computed(() => {
       <Chart
         v-if="icuBeds.currentUsageTotal"
         :title="`Capacity : ${percentIcuCapacity}%`"
+        color="purple"
         :labels="['Usage', 'Capacity']"
         :data="[icuBeds.currentUsageTotal, icuBeds.capacity - icuBeds.currentUsageTotal]"
       />
       <Chart
         v-if="icuBeds.currentUsageCovid"
         title="COVID Cases"
+        color="purple"
         :labels="['COVID', 'NON-COVID']"
         :data="[icuBeds.currentUsageCovid, icuBeds.currentUsageTotal - icuBeds.currentUsageCovid]"
       />
@@ -149,11 +156,13 @@ const percentBedCapacity = computed(() => {
         v-if="hospitalBeds.currentUsageTotal"
         :title="`Capacity: ${percentBedCapacity}%`"
         :labels="['Usage', 'Capacity']"
+        color="purple"
         :data="[hospitalBeds.currentUsageTotal, hospitalBeds.capacity - hospitalBeds.currentUsageTotal]"
       />
       <Chart
         v-if="hospitalBeds.currentUsageCovid"
         title="COVID Cases"
+        color="purple"
         :labels="['COVID', 'NON-COVID']"
         :data="[hospitalBeds.currentUsageCovid, hospitalBeds.currentUsageTotal - hospitalBeds.currentUsageCovid]"
       />
