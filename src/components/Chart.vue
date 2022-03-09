@@ -33,11 +33,17 @@ const options = ref({
   plugins: {
     legend: {
       display: false,
+      font: {
+        weight: 'bold'
+      }
     },
     title: {
       display: !!props.title,
       text: props.title,
     },
+    tooltip: {
+      enabled: !!props.labels.length
+    }
   },
 })
 
