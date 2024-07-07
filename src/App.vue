@@ -23,7 +23,7 @@ const sourceData = computed(() => {
       : stateData.value;
 })
 
-function fetchStateData(state = "WA") {
+async function fetchStateData(state = "WA") {
   return fetch(`${endpoint}/state/${state}.json?apiKey=${apiKey}`, {})
       .then(res => {
         if (res.ok) {
@@ -38,7 +38,7 @@ function fetchStateData(state = "WA") {
       });
 }
 
-function fetchCountyData(countyCode = "53011") {
+async function fetchCountyData(countyCode = "53011") {
   return fetch(`${endpoint}/county/${countyCode}.json?apiKey=${apiKey}`, {})
       .then(res => {
         if (res.ok) {
@@ -53,17 +53,24 @@ function fetchCountyData(countyCode = "53011") {
       });
 }
 
-function onCountyChosen(newCounty) {
+async function onCountyChosen(newCounty) {
   if (newCounty) {
-    fetchCountyData(newCounty)
+    await fetchCountyData(newCounty)
     const state = states.fips.filter(
         // get state FIPS from first 2 numbers in county FIPS
         state => state.id === newCounty.substring(0, 2)
     );
-    fetchStateData(state[0].name)
+    await fetchStateData(state[0].name)
+
+    if (typeof gtag === 'function') {
+      gtag('event', 'select_content', {
+        'event_category': 'County Dropdown',
+        'event_label': `${countyData.value?.county}, ${countyData.value?.state}`
+      });
+    }
   } else {
-    fetchCountyData();
-    fetchStateData();
+    await fetchCountyData();
+    await fetchStateData();
   }
 }
 </script>
