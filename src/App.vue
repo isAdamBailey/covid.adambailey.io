@@ -62,8 +62,8 @@ async function onCountyChosen(newCounty) {
     );
     await fetchStateData(state[0].name)
 
-    if (typeof gtag === 'function') {
-      gtag('event', 'select_content', {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'select_content', {
         'event_category': 'County Dropdown',
         'event_label': `${countyData.value?.county}, ${countyData.value?.state}`
       });
